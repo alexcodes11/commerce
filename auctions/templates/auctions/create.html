@@ -1,0 +1,46 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Create Listing</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'createlisting' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlTextarea6">Title</label>
+            <input class="form-control" autofocus type="text" name="title" placeholder="Title" required>
+        </div>
+       <div class="form-group shadow-textarea">
+            <label for="exampleFormControlTextarea6">Description</label>
+           <textarea class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" name="description" placeholder="Write something here..."></textarea>
+      </div>
+        <div class="form-group">
+             <label for="exampleFormControlTextarea6">Starting Bid</label>
+            <input class="form-control" type="number" step="0.01" name="bid" placeholder="Starting Bid" required>
+        </div>
+        {{ form.as_p }}
+        <div class="form-group">
+            <label for="exampleFormControlTextarea6">Image URL</label>
+            <input class="form-control" type="url" name="image" placeholder="Image" required>
+        </div>
+      
+    
+<div class="form-group">
+    <label for="exampleFormControlSelect1"> Select Category</label>
+    <select class="form-control" id="exampleFormControlSelect1" name="category"> 
+      <option selected disabled>Category</option>
+      <option>Movies</option>
+      <option>Gaming</option>
+      <option>Sports</option>
+      <option>Fashion</option>
+    </select>
+  </div>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+
+
+{% endblock %}

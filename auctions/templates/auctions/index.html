@@ -1,0 +1,35 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <table>
+    <tr>
+        <th>Seller</th>
+
+        <th>Image</th>
+
+        <th>Product</th>
+
+        <th>Description</th>
+
+        <th>Price</th>
+
+        <th>Category</th>
+        <th>Date Created</th>
+    </tr>
+    {% for item in query_results %}
+    <tr> 
+        <td>{{ item.seller }}</td>
+        <td><img src="{{item.image }}" alt="{{item.title}}" style="width: 200px; height: 200px;"></td>
+        <td>{{ item.title }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.setprice }}</td>
+        <td>{{ item.category }}</td>
+         <td>{{item.date_created}}</td>
+    </tr>
+    
+    {% endfor %}
+</table>
+
+
+{% endblock %}
