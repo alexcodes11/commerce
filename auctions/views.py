@@ -1,14 +1,14 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 import datetime
 from django import forms
 
 
-from .models import User, CreateListing
+from .models import User, CreateListing, Watchlist
 
 def index(request):
     query_results = CreateListing.objects.all()
@@ -79,7 +79,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 
-
+@login_required
 def create_listing(request):
     if request.method == "POST":
         title = request.POST["title"]
@@ -87,9 +87,39 @@ def create_listing(request):
         bid = request.POST["bid"]
         category = request.POST["category"]
         image = request.POST["image"]
-        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, setprice= bid, category = category, date_created= datetime.datetime.now())
+        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, 
+        setprice= bid, category = category, date_created= datetime.datetime.now())
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/create.html")
 
+
+def listing(request, listing_id):
+    if request.method == "GET":
+        item = CreateListing.objects.get(pk=listing_id)
+        test = Watchlist.objects.filter(user = request.user, item= item).exists()
+        return render(request, "auctions/listing.html", {
+            "item": item,
+            "test": test
+        })
+
+
+@login_required
+def watchlist_add(request, listing_id):
+    if request.method == "POST":
+        watch = CreateListing.objects.get(pk=listing_id)
+        test = Watchlist.objects.filter(user = request.user, item= watch).exists()
+        if test:
+            Watchlist.objects.filter(user= request.user, item = watch).delete()
+            return redirect("listing", listing_id)
+        Watchlist.objects.create(user= request.user, item = watch)
+        return redirect("listing", listing_id)
+
+@login_required
+def watchlist(request):
+    if request.method == "GET":
+        query_results = Watchlist.objects.filter(user = request.user)
+        return render(request, "auctions/watchlist.html", {
+            "query_results": query_results
+        })

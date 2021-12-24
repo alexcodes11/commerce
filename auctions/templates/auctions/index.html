@@ -1,35 +1,27 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
-    <table>
-    <tr>
-        <th>Seller</th>
-
-        <th>Image</th>
-
-        <th>Product</th>
-
-        <th>Description</th>
-
-        <th>Price</th>
-
-        <th>Category</th>
-        <th>Date Created</th>
-    </tr>
-    {% for item in query_results %}
-    <tr> 
-        <td>{{ item.seller }}</td>
-        <td><img src="{{item.image }}" alt="{{item.title}}" style="width: 200px; height: 200px;"></td>
-        <td>{{ item.title }}</td>
-        <td>{{ item.description }}</td>
-        <td>{{ item.setprice }}</td>
-        <td>{{ item.category }}</td>
-         <td>{{item.date_created}}</td>
-    </tr>
+<h2>Active Listings</h2>
+<div class="container-fluid" >
+        <div class="row">
+            {% for item in query_results %}
+                <div class="card list-details col-lg-4 col-sm-12">
+                    <div class="card-body">
+                    <h5 class="card-title product-title product-description"><i>{{item.title}}</i></h5>
+                    <h5 class="card-title product-title product-description"><i>{{item.id}}</i></h5>
+                    <h6 class="card-subtitle mb-2 text-muted product-description">{{item.date_created}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted product-description"><strong>{{item.seller}}</strong></h6>
+                    <img class="img-fluid" src="{{item.image}}" alt="connect" style="max-height:300px">
+                    </div>
+                    <ul class="list-group list-group-flush">
     
-    {% endfor %}
-</table>
-
-
+                            <li class="list-group-item product-description">Initial Bid: {{item.setprice}}</li>
+                       
+                        <li class="list-group-item product-description">Category: {{item.category}}</li>
+                          <li class="list-group-item product-description"><a href="{% url 'listing' item.id %}">Access Me</a></li>
+                    </ul>
+        </div>
+        {% endfor %}
+</div>
+</div>
 {% endblock %}
