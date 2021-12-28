@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<form action="{% url 'watchlist_add' item.id %}" method="post">
+    {% csrf_token %}
+        {% if test %}
+        <input type="submit" value="Remove from WatchList">
+        {% else  %}
+        <input type="submit" value=" Add WatchList">
+        {% endif %}
+    {{number}}
+</form>
+<h1>{{item.title}}</h1>
+<div>{{item.seller}}</div>
+<div>{{item.description}}</div>
+<div>{{item.setprice}}</div>
+<div><img class="img-fluid" src="{{item.image}}" alt="connect" style="height:50vh"></div>
+<div>{{item.category}}</div>
+<div>{{item.id}}</div>
+
+
+{% if bid == bid %}
+<p>
+{{message}}
+</p>
+{% endif %}
+
+<form action="{% url 'bid' item.id %}" method="POST">
+        {% csrf_token %}
+        <input type="number" name="bid">
+        <input type="submit" value="Bid">
+</form>
+
+<form action="{% url 'comment' item.id %}" method="POST">
+        <textarea name="comment" cols="30" rows="10">Add a comment</textarea>
+        <input type="submit">
+</form>
+
+{% endblock %}

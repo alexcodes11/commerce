@@ -8,7 +8,8 @@ import datetime
 from django import forms
 
 
-from .models import User, CreateListing, Watchlist
+
+from .models import User, CreateListing, Watchlist, Bid
 
 def index(request):
     query_results = CreateListing.objects.all()
@@ -100,10 +101,9 @@ def listing(request, listing_id):
         item = CreateListing.objects.get(pk=listing_id)
         test = Watchlist.objects.filter(user = request.user, item= item).exists()
         return render(request, "auctions/listing.html", {
-            "item": item,
-            "test": test
-        })
-
+        "item": item,
+        "test": test,
+    })
 
 @login_required
 def watchlist_add(request, listing_id):
@@ -123,3 +123,28 @@ def watchlist(request):
         return render(request, "auctions/watchlist.html", {
             "query_results": query_results
         })
+
+@login_required
+def bid(request, listing_id):
+    if request.method == "POST":
+        bid = request.POST["bid"]
+        if CreateListing.objects.filter(setprice__gte = bid, pk=listing_id).exists():
+            item = CreateListing.objects.get(pk=listing_id)
+            test = Watchlist.objects.filter(user = request.user, item= item).exists()
+            return render(request, "auctions/listing.html", {
+                "item": item,
+                "test": test,
+                "bid": bid,
+                "message": "You need to bid above the current price"
+            })
+        else:
+            bidd = Bid.objects.create(userbid = bid, person = request.user, biddate = datetime.datetime.now())
+            bidd.save()
+            CreateListing.objects.filter(pk=listing_id).update(setprice = bid)
+            return redirect('listing', listing_id)
+
+@login_required
+def comment(request, listing_id):
+    if request.method == "POST":
+        comment = request.POST["comment"]
+        
