@@ -18,21 +18,56 @@
 <div>{{item.id}}</div>
 
 
+
 {% if bid == bid %}
 <p>
 {{message}}
 </p>
 {% endif %}
 
+
+
+{% if winner.person %}
+{% else %}
+{% if user != item.seller %}
 <form action="{% url 'bid' item.id %}" method="POST">
         {% csrf_token %}
         <input type="number" name="bid">
         <input type="submit" value="Bid">
 </form>
+{% else %}
+<p>I am the seller. So you do no need to see the pid action instead you see this:</p>
+<form action="{% url 'close' item.id %}" method="POST">
+         {% csrf_token %}
+       <input type="submit" value="Close listing">
+</form>
+{% endif %}
+{% endif %}
+
+
+
+{% if winner.person %}
+{% if user == winner.person %}
+        <p>You won the bid</p>
+{% else %}
+        <p> Bid is closed, {{winner.person}} won the bid</p>
+{% endif %}
+{% else %}
+{% endif %}
+
 
 <form action="{% url 'comment' item.id %}" method="POST">
+         {% csrf_token %}
         <textarea name="comment" cols="30" rows="10">Add a comment</textarea>
         <input type="submit">
 </form>
+
+{% for info in information%}
+<div>
+        <p>User: {{info.person}}</p>
+        <p>Comment: {{info.comment}}</p>
+        <p>Id: {{info.item_id}}</p>
+</div>
+{% endfor %}
 
 {% endblock %}

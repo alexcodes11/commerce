@@ -9,10 +9,10 @@ from django import forms
 
 
 
-from .models import User, CreateListing, Watchlist, Bid
+from .models import Comment, User, CreateListing, Watchlist, Bid
 
 def index(request):
-    query_results = CreateListing.objects.all()
+    query_results = CreateListing.objects.filter(active = True)
     return render(request, "auctions/index.html",{
         "query_results": query_results
     })
@@ -88,8 +88,7 @@ def create_listing(request):
         bid = request.POST["bid"]
         category = request.POST["category"]
         image = request.POST["image"]
-        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, 
-        setprice= bid, category = category, date_created= datetime.datetime.now())
+        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, setprice= bid, category = category, date_created= datetime.datetime.now(), active = True)
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     else:
@@ -100,10 +99,22 @@ def listing(request, listing_id):
     if request.method == "GET":
         item = CreateListing.objects.get(pk=listing_id)
         test = Watchlist.objects.filter(user = request.user, item= item).exists()
-        return render(request, "auctions/listing.html", {
-        "item": item,
-        "test": test,
-    })
+        information = Comment.objects.all()
+        if CreateListing.objects.filter(pk= listing_id, active= False):
+            winner = Bid.objects.filter(item_id = listing_id).latest('person')
+            return render(request, "auctions/listing.html", {
+                    "item": item,
+                    "test": test,
+                    "information": information,
+                    "winner": winner
+                    })
+        else:
+            return render(request, "auctions/listing.html", {
+                "item": item,
+                "test": test,
+                "information": information
+            })
+
 
 @login_required
 def watchlist_add(request, listing_id):
@@ -138,7 +149,7 @@ def bid(request, listing_id):
                 "message": "You need to bid above the current price"
             })
         else:
-            bidd = Bid.objects.create(userbid = bid, person = request.user, biddate = datetime.datetime.now())
+            bidd = Bid.objects.create(userbid = bid, person = request.user, biddate = datetime.datetime.now(), item_id = listing_id)
             bidd.save()
             CreateListing.objects.filter(pk=listing_id).update(setprice = bid)
             return redirect('listing', listing_id)
@@ -147,4 +158,11 @@ def bid(request, listing_id):
 def comment(request, listing_id):
     if request.method == "POST":
         comment = request.POST["comment"]
-        
+        info = Comment.objects.create(person = request.user, comment = comment, item_id = listing_id )
+        info.save()
+        return redirect('listing' , listing_id)
+
+def close(request, listing_id):
+    if request.method == "POST":
+        CreateListing.objects.filter(pk= listing_id).update(active= False)
+        return redirect('listing', listing_id)
