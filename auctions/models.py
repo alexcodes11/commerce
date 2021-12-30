@@ -6,7 +6,10 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     
-
+class Category(models.Model):
+    name = models.CharField(max_length=32, blank= False, default="Other")
+    def __str__(self):
+        return self.name
 
 class CreateListing(models.Model):
     seller = models.ForeignKey(User, on_delete= models.CASCADE)
@@ -14,7 +17,7 @@ class CreateListing(models.Model):
     description = models.TextField(default="None")
     setprice = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='images/')
-    category = models.CharField(max_length=32, blank= False, default="Other")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     date_created = models.DateField()
     active = models.BooleanField(default=False)
 

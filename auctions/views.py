@@ -8,8 +8,8 @@ import datetime
 from django import forms
 
 
+from .models import Comment, User, CreateListing, Watchlist, Bid, Category
 
-from .models import Comment, User, CreateListing, Watchlist, Bid
 
 def index(request):
     query_results = CreateListing.objects.filter(active = True)
@@ -87,12 +87,17 @@ def create_listing(request):
         description = request.POST["description"]
         bid = request.POST["bid"]
         category = request.POST["category"]
+        item = Category.objects.get(name = category)
         image = request.POST["image"]
-        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, setprice= bid, category = category, date_created= datetime.datetime.now(), active = True)
+        listing = CreateListing.objects.create(seller=request.user, title= title, description= description, image = image, setprice= bid, category = item, date_created= datetime.datetime.now(), active = True)
         listing.save()
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "auctions/create.html")
+        choices = Category.objects.all()
+        mylist = []
+        for item in choices:
+            mylist.append(item)
+        return render(request, "auctions/create.html", {"mylist":mylist})
 
 
 def listing(request, listing_id):

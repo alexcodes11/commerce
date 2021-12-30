@@ -32,12 +32,9 @@
 <div class="form-group">
     <label for="exampleFormControlSelect1"> Select Category</label>
     <select class="form-control" id="exampleFormControlSelect1" name="category" required> 
-      <option selected disabled>Category</option>
-      <option>Movies</option>
-      <option>Gaming</option>
-      <option>Sports</option>
-      <option>Fashion</option>
-      <option>Other</option>
+      {% for item in mylist%}
+      <option value="{{item}}">{{item}}</option>
+      {% endfor %}
     </select>
   </div>
         <input class="btn btn-primary" type="submit" value="Register">
