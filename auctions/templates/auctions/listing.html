@@ -1,5 +1,6 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
+
 <form action="{% url 'watchlist_add' item.id %}" method="post">
     {% csrf_token %}
         {% if test %}

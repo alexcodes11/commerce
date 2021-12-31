@@ -1,0 +1,28 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+<h2> Category: {{name}}</h2>
+
+<div class="container-fluid" >
+        <div class="row">
+            {% for category in result %}
+                <div class="card list-details col-lg-4 col-sm-12">
+                    <div class="card-body">
+                    <h5 class="card-title product-title product-description"><i>{{category.title}}</i></h5>
+                    <h5 class="card-title product-title product-description"><i>{{category.id}}</i></h5>
+                    <h6 class="card-subtitle mb-2 text-muted product-description">{{category.date_created}}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted product-description"><strong>{{category.seller}}</strong></h6>
+                    <img class="img-fluid" src="{{items.item.image}}" alt="connect" style="max-height:300px">
+                    </div>
+                    <ul class="list-group list-group-flush">
+    
+                            <li class="list-group-item product-description">Initial Bid: {{category.setprice}}</li>
+                       
+                        <li class="list-group-item product-description">Category: {{category.category}}</li>
+                        <li class="list-group-item product-description"><a href="{% url 'listing' category.id %}">Access Me</a></li>
+                    </ul>
+        </div>
+                {% endfor %}
+</div>
+</div>
+{% endblock %}

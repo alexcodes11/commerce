@@ -14,7 +14,8 @@ from .models import Comment, User, CreateListing, Watchlist, Bid, Category
 def index(request):
     query_results = CreateListing.objects.filter(active = True)
     return render(request, "auctions/index.html",{
-        "query_results": query_results
+        "query_results": query_results,
+        'categories': Category.objects.all()
     })
 
 
@@ -97,7 +98,7 @@ def create_listing(request):
         mylist = []
         for item in choices:
             mylist.append(item)
-        return render(request, "auctions/create.html", {"mylist":mylist})
+        return render(request, "auctions/create.html", {"mylist":mylist, 'categories': Category.objects.all()})
 
 
 def listing(request, listing_id):
@@ -137,7 +138,8 @@ def watchlist(request):
     if request.method == "GET":
         query_results = Watchlist.objects.filter(user = request.user)
         return render(request, "auctions/watchlist.html", {
-            "query_results": query_results
+            "query_results": query_results,
+            'categories': Category.objects.all()
         })
 
 @login_required
@@ -167,7 +169,15 @@ def comment(request, listing_id):
         info.save()
         return redirect('listing' , listing_id)
 
+@login_required
 def close(request, listing_id):
     if request.method == "POST":
         CreateListing.objects.filter(pk= listing_id).update(active= False)
         return redirect('listing', listing_id)
+
+@login_required
+def category(request, category_id):
+    if request.method == "GET":
+        result = CreateListing.objects.filter(category = category_id)
+        name = Category.objects.only('name').get(pk = category_id)
+        return render(request, 'auctions/category.html', {'result': result, 'name':name, 'categories': Category.objects.all()})

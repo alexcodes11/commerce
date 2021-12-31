@@ -17,7 +17,7 @@ class CreateListing(models.Model):
     description = models.TextField(default="None")
     setprice = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField(upload_to='images/')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="Categories")
     date_created = models.DateField()
     active = models.BooleanField(default=False)
 
