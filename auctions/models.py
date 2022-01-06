@@ -34,4 +34,5 @@ class Bid(models.Model):
 class Comment(models.Model):
     person = models.ForeignKey(User, on_delete= models.CASCADE)
     comment = models.TextField(default="None")
+    date = models.DateTimeField()
     item_id= models.IntegerField()

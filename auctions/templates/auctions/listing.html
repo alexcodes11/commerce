@@ -1,74 +1,178 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 
-<form action="{% url 'watchlist_add' item.id %}" method="post">
+
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column" style="margin-top: 2%;">
+
+
+<main class="px-3">
+<h1 class="thisisaliceblue" style="text-align: center;">{{item.title}}</h1>
+   <div class="textaligncenter"><img class="img-fluid" src="{{item.image}}" alt="connect" style="height:50vh"></div>
+   <br>
+   <h2 class="thisisaliceblueh2">Current Price: ${{item.setprice}} </h2>
+    <p class="lead">
+
+{% if none%}
+<div class="alert alert-dark" role="alert" style="text-align: center;">
+  {{none}}
+</div>
+<p class="thisisaliceblueh2" style="padding-top: 5%;">Number of bids ({{bids}})</p>
+
+{% else %}
+
+{% if winner.person %}
+        {% if user == winner.person %}
+                <div class="alert alert-success" role="alert" style="text-align: center;">You won the bid</div>
+                <div  style=" display:flex; justify-content: center;padding-top: 5%;">
+    <form action="{% url 'watchlist_add' item.id %}" method="post">
     {% csrf_token %}
         {% if test %}
-        <input type="submit" value="Remove from WatchList">
+        <input  class="btn btn-light" type="submit" value="Remove from WatchList">
         {% else  %}
-        <input type="submit" value=" Add WatchList">
+        <input class="btn btn-light" type="submit" value="Add to WatchList">
         {% endif %}
-    {{number}}
-</form>
-<h1>{{item.title}}</h1>
-<div>{{item.seller}}</div>
-<div>{{item.description}}</div>
-<div>{{item.setprice}}</div>
-<div><img class="img-fluid" src="{{item.image}}" alt="connect" style="height:50vh"></div>
-<div>{{item.category}}</div>
-<div>{{item.id}}</div>
+        </form>
+        </div>
+
+        {% else %}
+                <div class="alert alert-dark" role="alert" style="text-align: center;"> Bid is closed, {{winner.person}} won the bid </div>
+                 <p class="thisisaliceblueh2">Number of bids ({{bids}})</p>
+
+                <div  style=" display:flex; justify-content: center;">
+    <form action="{% url 'watchlist_add' item.id %}" method="post">
+    {% csrf_token %}
+        {% if test %}
+        <input  class="btn btn-light" type="submit" value="Remove from WatchList">
+        {% else  %}
+        <input class="btn btn-light" type="submit" value="Add to WatchList">
+        {% endif %}
+        </form>
+        </div>
+   {% endif %}
+{% else %}
 
 
+{% if user != item.seller %}
 
-{% if bid == bid %}
-<p>
+
+{% if bid >= bid %}
+<div class="alert alert-info" role="alert" style="text-align: center;">
 {{message}}
-</p>
+</div>
 {% endif %}
 
-
-
-{% if winner.person %}
-{% else %}
-{% if user != item.seller %}
 <form action="{% url 'bid' item.id %}" method="POST">
         {% csrf_token %}
-        <input type="number" name="bid">
-        <input type="submit" value="Bid">
+        <div style="display: flex; justify-content: center; ;">
+        <div style="width: 80%; justify-content: center; padding-left: 7%; padding-right: 3%; padding-top: 5%;">
+        <input type="number" name="bid"  class="form-control" style="width: 100%;" placeholder="Place a bid">
+        </div>
+        <div style="width: 20%;  padding-right:7% ; padding-top: 5%;">
+        <input class="btn btn-light"type="submit" value="Bid" style="width: 100%;">
+        </div>
+        </div>
 </form>
+
+<div  style=" display:flex; justify-content: center; padding-top: 10%;">
+    <form action="{% url 'watchlist_add' item.id %}" method="post">
+    {% csrf_token %}
+        {% if test %}
+        <input  class="btn btn-light" type="submit" value="Remove from WatchList">
+        {% else  %}
+        <input class="btn btn-light" type="submit" value="Add to WatchList">
+        {% endif %}
+        </form>
+</div>
+<p class="thisisaliceblueh2" style="padding-top: 5%;">Number of bids ({{bids}})</p>
+
 {% else %}
-<p>I am the seller. So you do no need to see the pid action instead you see this:</p>
 <form action="{% url 'close' item.id %}" method="POST">
          {% csrf_token %}
-       <input type="submit" value="Close listing">
-</form>
-{% endif %}
-{% endif %}
-
-
-
-{% if winner.person %}
-{% if user == winner.person %}
-        <p>You won the bid</p>
-{% else %}
-        <p> Bid is closed, {{winner.person}} won the bid</p>
-{% endif %}
-{% else %}
-{% endif %}
-
-
-<form action="{% url 'comment' item.id %}" method="POST">
-         {% csrf_token %}
-        <textarea name="comment" cols="30" rows="10">Add a comment</textarea>
-        <input type="submit">
+         <div style=" display: flex;
+  text-align: center;
+  justify-content: center;padding-top: 10%;">
+       <input class="btn btn-light" type="submit" value="Close Listing" >
+       </div>
 </form>
 
-{% for info in information%}
-<div>
-        <p>User: {{info.person}}</p>
-        <p>Comment: {{info.comment}}</p>
-        <p>Id: {{info.item_id}}</p>
+<div  style=" display:flex; justify-content: center; padding-top: 15%;">
+    <form action="{% url 'watchlist_add' item.id %}" method="post">
+    {% csrf_token %}
+        {% if test %}
+        <input  class="btn btn-light" type="submit" value="Remove from WatchList">
+        {% else  %}
+        <input class="btn btn-light" type="submit" value="Add to WatchList">
+        {% endif %}
+        </form>
+        </div>
+<p class="thisisaliceblueh2" style="padding-top: 5%;">Number of bids ({{bids}})</p>
+
+
+{% endif %}
+{% endif %}
+{% endif %}
+
+
+</p>
+
+
+<div class="list-group" style="margin-top: 20%;">
+    <div>
+      <h2 class="thisisaliceblueh2" > Product Details</h2>
+   </div>
+   <br>
+        <h5 class="textaligncenter">Description</h5>
+  <p class="textaligncenter">{{item.description}}</p>
+
+        <h5 class="textaligncenter" >Date posted </h5>
+        <p class="textaligncenter">{{item.date_created}}</p>
+
+
+  <h5 class="textaligncenter">Category</h5>
+  <p class="textaligncenter">{{item.category}}</p>
+  <h5 class="textaligncenter">Listed by</h5>
+  <p class="textaligncenter">{{item.seller}}</p>
+
+
+
 </div>
-{% endfor %}
+
+
+
+</main>
+
+
+
+</div>
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <div class="d-flex flex-column comment-section">
+        
+                {% for info in information%}
+                <div class="bg-dark p-2">
+                    <div class="d-flex flex-row user-info">
+                        <div class="d-flex flex-column justify-content-start ml-2"><span class="thisisaliceblue">{{info.person}}</span><span class="thisisaliceblueh2">{{info.date}}</span></div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="thisisaliceblue" style="padding-left: 20px;"> - {{info.comment}}</p>
+                    </div>
+                </div>
+                 {% endfor %}
+
+                <div class="bg-dark p-2">
+                    <form action="{% url 'comment' item.id %}" method="POST">
+                            {% csrf_token %}
+                    <div class="d-flex flex-row align-items-start"><textarea name="comment" class="form-control ml-1 shadow-none textarea"></textarea></div>
+                    <div class="mt-2 text-right"><button class="btn btn-light btn-sm shadow-none" type="submit">Post comment</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

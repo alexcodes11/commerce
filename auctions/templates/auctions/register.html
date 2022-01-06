@@ -1,36 +1,65 @@
-{% extends "auctions/layout.html" %}
+{% extends "auctions/layout.html" %} {% block body %}
 
-{% block body %}
-
-    <h2>Register</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'register' %}" method="post">
+<div class="container-fluid h-100" style="padding-top: 10%">
+  <div
+    class="row justify-content-center align-items-center h-100"
+    style="width: 100vw"
+  >
+    <div class="col col-sm-6 col-md-6 col-lg-6 col-xl-5">
+      <h2 class="thisisaliceblueh2" style="text-align: center">Register</h2>
+      {% if message %}
+      <div class="thisisaliceblue">{{message}}</div>
+      {% endif %}
+      <form action="{% url 'register' %}" method="post">
         {% csrf_token %}
-         <div class="form-group">
-            <input autofocus class="form-control" type="text" name="first_name" placeholder="First Name" >
-        </div>
-         <div class="form-group">
-            <input autofocus class="form-control" type="text" name="last_name" placeholder="Last Name">
+        <div class="form-group">
+          <input
+            class="form-control"
+            autofocus
+            type="text"
+            name="username"
+            placeholder="Username"
+            required
+          />
         </div>
         <div class="form-group">
-            <input class="form-control" autofocus type="text" name="username" placeholder="Username" required>
+          <input
+            class="form-control"
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            required
+          />
         </div>
         <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email Address" required>
+          <input
+            class="form-control"
+            type="password"
+            name="password"
+            placeholder="Password"
+            required
+          />
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password" required>
+          <input
+            class="form-control"
+            type="password"
+            name="confirmation"
+            placeholder="Confirm Password"
+            required
+          />
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password" required>
+                    <button class="btn btn-secondary btn-lg btn-block" type="submit">Register</button>
         </div>
-        <input class="btn btn-primary" type="submit" value="Register">
-    </form>
+      </form>
 
-    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+      <p class="thisisaliceblueh2" style="text-align: center;">
+        Already have an account?
+        <a style="color: white" href="{% url 'login' %}">Log In here.</a>
+      </p>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

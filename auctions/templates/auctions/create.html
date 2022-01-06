@@ -1,44 +1,82 @@
-{% extends "auctions/layout.html" %}
-
-{% block body %}
-
-    <h2>Create Listing</h2>
-
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-
-    <form action="{% url 'createlisting' %}" method="post">
+{% extends "auctions/layout.html" %} {% block body %}
+<div class="container-fluid h-100" style="padding-top: 3%">
+  <div
+    class="row justify-content-center align-items-center h-100"
+    style="width: 100vw"
+  >
+    <div class="col col-sm-6 col-md-6 col-lg-6 col-xl-5">
+      <h2 class="thisisaliceblueh2">Create Listing</h2>
+      {% if message %}
+      <div class="thisisaliceblue">{{message}}</div>
+      {% endif %}
+      <form action="{% url 'createlisting' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <label for="exampleFormControlTextarea6">Title</label>
-            <input class="form-control" autofocus type="text" name="title" placeholder="Title" required>
+          <label for="exampleFormControlTextarea6">Title</label>
+          <input
+            class="form-control"
+            autofocus
+            type="text"
+            name="title"
+            placeholder="Title"
+            required
+          />
         </div>
-       <div class="form-group shadow-textarea">
-            <label for="exampleFormControlTextarea6">Description</label>
-           <textarea required class="form-control z-depth-1" id="exampleFormControlTextarea6" rows="3" name="description" placeholder="Write something here..."></textarea>
-      </div>
+        <div class="form-group shadow-textarea">
+          <label for="exampleFormControlTextarea6">Description</label>
+          <textarea
+            required
+            class="form-control z-depth-1"
+            id="exampleFormControlTextarea6"
+            rows="3"
+            name="description"
+            placeholder="Write something here..."
+          ></textarea>
+        </div>
         <div class="form-group">
-             <label for="exampleFormControlTextarea6">Starting Bid</label>
-            <input class="form-control" type="number" step="0.01" name="bid" placeholder="Starting Bid" required>
+          <label for="exampleFormControlTextarea6">Starting Bid</label>
+          <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="bid"
+            placeholder="Starting Bid"
+            required
+          />
         </div>
         {{ form.as_p }}
         <div class="form-group">
-            <label for="exampleFormControlTextarea6">Image URL</label>
-            <input class="form-control" type="url" name="image" placeholder="Image" required>
+          <label for="exampleFormControlTextarea6">Image URL</label>
+          <input
+            class="form-control"
+            type="url"
+            name="image"
+            placeholder="Image"
+            required
+          />
         </div>
-      
-    
-<div class="form-group">
-    <label for="exampleFormControlSelect1"> Select Category</label>
-    <select class="form-control" id="exampleFormControlSelect1" name="category" required> 
-      {% for item in mylist%}
-      <option value="{{item}}">{{item}}</option>
-      {% endfor %}
-    </select>
-  </div>
-        <input class="btn btn-primary" type="submit" value="Create">
-    </form>
 
+        <div class="form-group">
+          <label for="exampleFormControlSelect1"> Select Category</label>
+          <select
+            class="form-control"
+            id="exampleFormControlSelect1"
+            name="category"
+            required
+          >
+            {% for item in mylist%}
+            <option value="{{item}}">{{item}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <button class="btn btn-secondary btn-lg btn-block" type="submit">
+            Login
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

@@ -2,23 +2,34 @@
 
 {% block body %}
 
-    <h2>Login</h2>
 
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+<div class="container-fluid h-100" style="padding-top: 10%;">
+    <div class="row justify-content-center align-items-center h-100" style="width: 100vw;">
+        <div class="col col-sm-6 col-md-6 col-lg-6 col-xl-5">
+            
+             <h2 class ="thisisaliceblueh2" style="text-align: center;">Login</h2>
+             {% if message %}
+                <div class="thisisaliceblue">{{message}}</div>
+            {% endif %}
+            <form action="{% url 'login' %}" method="post">
+                 {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control form-control-lg" placeholder="Email or Username" name="userinput" type="text">
+                </div>
+                <div class="form-group">
+                    <input class="form-control form-control-lg" placeholder="Password" name="password" type="password">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-secondary btn-lg btn-block" type="submit">Login</button>
+                </div>
+            </form>
+            <p class="thisisaliceblueh2" style="text-align: center;"> Don't have an account? <a style="color: white;"href="{% url 'register' %}">Register here.</a></p>
 
-    <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-        <div class="form-group">
-            <input autofocus class="form-control" type="text" name="userinput" placeholder="Email or Username">
         </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
-        </div>
-        <input class="btn btn-primary" type="submit" value="Login">
-    </form>
+    </div>
+</div>
 
-    Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+
+
 
 {% endblock %}

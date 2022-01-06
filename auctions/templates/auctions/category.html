@@ -1,28 +1,46 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 
-<h2> Category: {{name}}</h2>
+<h2 class="thisisaliceblueh2" style="padding-top: 3%;"> Category: {{name}}</h2>
 
-<div class="container-fluid" >
-        <div class="row">
-            {% for category in result %}
-                <div class="card list-details col-lg-4 col-sm-12">
-                    <div class="card-body">
-                    <h5 class="card-title product-title product-description"><i>{{category.title}}</i></h5>
-                    <h5 class="card-title product-title product-description"><i>{{category.id}}</i></h5>
-                    <h6 class="card-subtitle mb-2 text-muted product-description">{{category.date_created}}</h6>
-                    <h6 class="card-subtitle mb-2 text-muted product-description"><strong>{{category.seller}}</strong></h6>
-                    <img class="img-fluid" src="{{items.item.image}}" alt="connect" style="max-height:300px">
-                    </div>
-                    <ul class="list-group list-group-flush">
-    
-                            <li class="list-group-item product-description">Initial Bid: {{category.setprice}}</li>
-                       
-                        <li class="list-group-item product-description">Category: {{category.category}}</li>
-                        <li class="list-group-item product-description"><a href="{% url 'listing' category.id %}">Access Me</a></li>
-                    </ul>
+{% for item in result %}
+<br />
+<div class="yoloyoloyolo">
+  <div class="card">
+    <div class="card-body">
+      <div class="indexdivimage">
+        <img
+          src="{{item.image}}"
+          class="img-fluid"
+          alt="{{item.title}}"
+        />
+      </div>
+
+      <div class = "infoforlisting">
+        <h4 class="card-title">{{item.title}}</h4>
+        <h6 class="card-subtitle mb-2 text-muted">{{item.category}}</h6>
+        <p class="text-justify text-truncate para mb-0">{{item.description}}</p>
+        <footer class="blockquote-footer">
+          Listed on: {{item.date_created}}<cite title="Source Title">
+            by {{item.seller}}</cite
+          >
+        </footer>
+      </div>
+
+
+    </div>
+     <div
+        class="pricing"
+      >
+        <h3>${{item.setprice}}</h3>
+        <div class= "buttonview">
+        <a href="{% url 'listing' item.id %}" class="btn btn-secondary">
+          Details
+        </a>
         </div>
-                {% endfor %}
+
+      </div>
+  </div>
 </div>
-</div>
+{% endfor %} 
 {% endblock %}

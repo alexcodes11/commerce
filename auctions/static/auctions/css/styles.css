@@ -1,0 +1,146 @@
+.card:hover .buttons {
+  opacity: 1;
+}
+
+.card:hover .weight {
+  margin-top: 10px;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  z-index: 2;
+  overflow: hidden;
+}
+.dropdown:hover > .dropdown-menu {
+  display: block;
+  position: absolute;
+}
+
+@media only screen and (min-width: 584px) {
+  .card-body {
+    display: flex;
+  }
+  .card {
+    width: 75vw;
+  }
+  .yoloyoloyolo {
+    display: flex;
+    justify-content: center;
+    height: 25vh;
+  }
+  .indexdivimage {
+    height: 100%;
+    margin-left: 5%;
+    width: 20%;
+  }
+  .img-fluid {
+    min-height: 100%; 
+    max-height: 100%; 
+    width: 100%
+  }
+  .infoforlisting{
+    padding-left: 7%; 
+    width: 50%
+  }
+  .pricing{
+    display: grid;
+    width: 100%;
+    justify-content: flex-end;
+    position: absolute;
+    height: 10vh;
+    padding-top:5%;
+    padding-right: 8%;
+  }
+  .buttonview{
+    padding-left: 20px;
+  }
+  .blockquote-footer{
+    max-height: 100%;
+    padding-top: 5%;
+  }
+}
+@media only screen and (max-width: 584px) {
+  .card-body {
+    display: flex;
+    width: 100%;
+  }
+  .card {
+    width: 100vw;
+  }
+  .yoloyoloyolo {
+    display: flex;
+    justify-content: center;
+    height: 23vh;
+  }
+  .indexdivimage {
+    height: 100%;
+    width: 30%;
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .img-fluid {
+    height: 100%; 
+    width: 100%
+  }
+  .infoforlisting{
+    display: grid;
+    height: 100%;
+    width: 150px;
+    padding-left: 7%; 
+    justify-content: center;
+  }
+  .pricing{
+    display: grid;
+    justify-content: flex-end;
+    position: absolute;
+    height: 10vh;
+    width: 100%;
+    padding-top:10%;
+    padding-right: 8%;
+
+  }
+  h3{
+    font-size:1.2em;
+  }
+  .buttonview{
+    width: 15px;
+    height: 10px;
+  }
+  .blockquote-footer{
+    max-height: 100%;
+  }
+}
+
+.textaligncenter {
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  color: aliceblue;
+}
+label{
+  color: aliceblue;
+}
+
+body{
+  background-color: #212529!important;
+}
+
+.thisisaliceblueh2{
+  color: aliceblue;
+  font-weight: 300;
+  text-align: center;
+}
+.thisisaliceblue{
+  color: aliceblue;
+  font-weight: 800;
+  
+}
+
+.input-group{
+  margin:0px auto;
+ }
+
+ .cover-container {
+  max-width: 42em;
+}

@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<style>
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  border-radius: .25rem;
+}
+
+.card .card-header {
+  background-color: #fff;
+  border-bottom: none;
+}
+</style>
+
+
+<div class="row justify-content-center">
+    <div class="col-md-12 col-sm-12">
+        <div class="card shadow-lg border-0 rounded-lg mt-5 mx-auto" style="width: 40rem; height: 15rem" >
+            <h3 class="card-header display-1 text-muted text-center">
+                Error
+            </h3>
+
+            <span class="card-subtitle mb-2 text-muted text-center">
+                Please login or register in order to view listing details.
+            </span>
+            <div style="display: flex; text-align: center; justify-content: center;">
+                <a class="btn btn-secondary" href="{% url 'register' %}" role="button" style="margin-right: 5%; width: 20%;">Register</a>
+                <a class="btn btn-secondary" href="{% url 'login' %}" role="button" style="width: 20%;">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

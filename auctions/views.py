@@ -50,8 +50,6 @@ def logout_view(request):
 
 def register(request):
     if request.method == "POST":
-        first_name = request.POST["first_name"]
-        last_name = request.POST["last_name"]
         username = request.POST["username"]
         email = request.POST["email"]
 
@@ -69,7 +67,7 @@ def register(request):
                 return render(request, "auctions/register.html", {
                     "message": "Email is already taken."
                     })
-            user = User.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
+            user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
         except IntegrityError:
             return render(request, "auctions/register.html", {
@@ -103,23 +101,47 @@ def create_listing(request):
 
 def listing(request, listing_id):
     if request.method == "GET":
-        item = CreateListing.objects.get(pk=listing_id)
-        test = Watchlist.objects.filter(user = request.user, item= item).exists()
-        information = Comment.objects.all()
-        if CreateListing.objects.filter(pk= listing_id, active= False):
-            winner = Bid.objects.filter(item_id = listing_id).latest('person')
-            return render(request, "auctions/listing.html", {
+        if request.user.is_authenticated: 
+            item = CreateListing.objects.get(pk=listing_id)
+            test = Watchlist.objects.filter(user = request.user, item= item).exists()
+            information = Comment.objects.filter(item_id= listing_id)
+            bids = Bid.objects.filter(item_id = listing_id).count()
+            # makes sure if there is a bid, if there is we get the latest person who placed a bid and display it on our webpage.
+            if Bid.objects.filter(item_id = listing_id).exists():
+                latest = Bid.objects.filter(item_id = listing_id).latest('person')
+            else:
+                latest = "Be the first person to make a bid!"
+
+            if CreateListing.objects.filter(pk= listing_id, active= False):
+                # checking if there is a bid
+                if Bid.objects.filter(item_id = listing_id).exists():
+                    winner = Bid.objects.filter(item_id = listing_id).latest('person')
+                    return render(request, "auctions/listing.html", {
+                            "item": item,
+                            "test": test,
+                            "information": information,
+                            "winner": winner,
+                            "bids": bids
+                            })
+                else:
+                    # if there is no bid there is no winner
+                    return render(request, "auctions/listing.html", {
+                            "item": item,
+                            "test": test,
+                            "information": information,
+                            "bids": bids,
+                            "none": "There is no winner!!"
+                            })
+            else:
+                return render(request, "auctions/listing.html", {
                     "item": item,
                     "test": test,
                     "information": information,
-                    "winner": winner
-                    })
+                    "bids": bids,
+                    "latest": latest
+                })
         else:
-            return render(request, "auctions/listing.html", {
-                "item": item,
-                "test": test,
-                "information": information
-            })
+            return render(request, "auctions/error.html")
 
 
 @login_required
@@ -165,7 +187,7 @@ def bid(request, listing_id):
 def comment(request, listing_id):
     if request.method == "POST":
         comment = request.POST["comment"]
-        info = Comment.objects.create(person = request.user, comment = comment, item_id = listing_id )
+        info = Comment.objects.create(person = request.user, comment = comment, item_id = listing_id, date = datetime.datetime.now())
         info.save()
         return redirect('listing' , listing_id)
 
@@ -178,6 +200,6 @@ def close(request, listing_id):
 @login_required
 def category(request, category_id):
     if request.method == "GET":
-        result = CreateListing.objects.filter(category = category_id)
+        result = CreateListing.objects.filter(category = category_id, active= True)
         name = Category.objects.only('name').get(pk = category_id)
         return render(request, 'auctions/category.html', {'result': result, 'name':name, 'categories': Category.objects.all()})
