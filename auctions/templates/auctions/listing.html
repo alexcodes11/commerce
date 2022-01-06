@@ -65,7 +65,7 @@
         {% csrf_token %}
         <div style="display: flex; justify-content: center; ;">
         <div style="width: 80%; justify-content: center; padding-left: 7%; padding-right: 3%; padding-top: 5%;">
-        <input type="number" name="bid"  class="form-control" style="width: 100%;" placeholder="Place a bid">
+        <input type="number" step="0.01" name="bid" class="form-control" style="width: 100%;" placeholder="Place a bid">
         </div>
         <div style="width: 20%;  padding-right:7% ; padding-top: 5%;">
         <input class="btn btn-light"type="submit" value="Bid" style="width: 100%;">
